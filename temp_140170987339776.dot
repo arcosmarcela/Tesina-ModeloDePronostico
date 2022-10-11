@@ -1,0 +1,32 @@
+digraph{
+  nodesep=0.05;
+  orientation=portrait;
+  size=7;
+  ranksep=0.25;
+
+  input [shape=box color=red label="input\nfloat((0, 2))" fontsize=10];
+
+  output_label [shape=box color=green label="output_label\nint64((0,))" fontsize=10];
+  output_probability [shape=box color=green label="output_probability\n[{int64, {'kind': 'tensor', 'elem': 'float', 'shape': }}]" fontsize=10];
+
+
+  variable [shape=box label="variable" fontsize=10];
+  Scaler [shape=box style="filled,rounded" color=orange label="Scaler\n(Scaler)\noffset=[5.8433332 3.0573332]\nscale=[1.2116787 2.3019676]" fontsize=10];
+  input -> Scaler;
+  Scaler -> variable;
+
+  label [shape=box label="label" fontsize=10];
+  probabilities [shape=box label="probabilities" fontsize=10];
+  TreeEnsembleClassifier [shape=box style="filled,rounded" color=orange label="TreeEnsembleClassifier\n(TreeEnsembleClassifier)\nbase_values=[0.5 0.5 0.5]\nclass_ids=[0 0 0 0 0 0 1 1 1 1 ...\nclass_nodeids=[ 3  4  5  7  9 1...\nclass_treeids=[0 0 0 0 0 0 1 1 ...\nclass_weights=[-7.66345476e-09 ...\nclasslabels_int64s=[0 1 2]\nnodes_falsenodeids=[ 6  5  4  0...\nnodes_featureids=[0 1 0 0 0 0 1...\nnodes_missing_value_tracks_true=[1 1 1 0 0...\nnodes_modes=[b'BRANCH_LT' b'BRA...\nnodes_nodeids=[ 0  1  2  3  4  ...\nnodes_treeids=[0 0 0 0 0 0 0 0 ...\nnodes_truenodeids=[ 1  2  3  0 ...\nnodes_values=[-0.4765936  -0.59...\npost_transform=b'SOFTMAX'" fontsize=10];
+  variable -> TreeEnsembleClassifier;
+  TreeEnsembleClassifier -> label;
+  TreeEnsembleClassifier -> probabilities;
+
+  ZipMap [shape=box style="filled,rounded" color=orange label="ZipMap\n(ZipMap)\nclasslabels_int64s=[0 1 2]" fontsize=10];
+  probabilities -> ZipMap;
+  ZipMap -> output_probability;
+
+  Cast [shape=box style="filled,rounded" color=orange label="Cast\n(Cast)\nto=7" fontsize=10];
+  label -> Cast;
+  Cast -> output_label;
+}
